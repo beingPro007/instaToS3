@@ -1,0 +1,6 @@
+venv
+node_modules
+google-credentials.json
+.env
+client_secret.json
+token.json
