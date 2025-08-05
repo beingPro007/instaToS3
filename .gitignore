@@ -4,3 +4,4 @@ google-credentials.json
 .env
 client_secret.json
 token.json
+imageViewer.html
