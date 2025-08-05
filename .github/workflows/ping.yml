@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Curl ping
         run: |
-          curl -sSf https://instatodrive.onrender.com/health
+          ping instatodrive.onrender.com
