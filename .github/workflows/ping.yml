@@ -1,14 +1,1 @@
-name: Keep Render Alive
-
-on:
-  schedule:
-    - cron: '*/10 * * * *'
-  workflow_dispatch:  # allows manual trigger from GitHub UI
-
-jobs:
-  ping:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Curl ping
-        run: |
-          ping -c 1 instatodrive.onrender.com
+name: Keep Render Aliv 
