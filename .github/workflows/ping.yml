@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Curl ping
         run: |
-          ping instatodrive.onrender.com
+          ping -c 1 instatodrive.onrender.com
