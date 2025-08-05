@@ -3,6 +3,7 @@ name: Keep Render Alive
 on:
   schedule:
     - cron: '*/10 * * * *'
+  workflow_dispatch:  # allows manual trigger from GitHub UI
 
 jobs:
   ping:
@@ -10,4 +11,4 @@ jobs:
     steps:
       - name: Curl ping
         run: |
-          curl https://instatodrive.onrender.com/health
+          curl -sSf https://instatodrive.onrender.com/health
