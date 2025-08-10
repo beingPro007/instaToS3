@@ -1,170 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <title>Instagram to S3 Uploader</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="manifest" href="/manifest.json">
-    <style>
-        /* Your existing CSS styles... */
-        :root {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --primary-text: #e0e0e0;
-            --secondary-text: #a0a0a0;
-            --input-bg: #2b2b2b;
-            --border-color: #444;
-        }
+<meta charset="UTF-8" />
+<title>Instagram to S3 Uploader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--primary-text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+<style>
+:root {
+    --bg-color: #121212;
+    --surface-color: #1e1e1e;
+    --primary-text: #e0e0e0;
+    --secondary-text: #a0a0a0;
+    --input-bg: #2b2b2b;
+    --border-color: #444;
+}
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background-color: var(--surface-color);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--primary-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
 
-        h1 {
-            font-size: 2em;
-            font-weight: 700;
-            color: #ffffff;
-            margin-top: 0;
-            margin-bottom: 30px;
-        }
+.container {
+    width: 100%;
+    max-width: 500px;
+    background-color: var(--surface-color);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
 
-        input[type="text"] {
-            width: 100%;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            font-size: 16px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--primary-text);
-            box-sizing: border-box;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
+h1 {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin: 0 0 20px;
+}
 
-        input[type="text"]::placeholder {
-            color: var(--secondary-text);
-        }
+input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--primary-text);
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
 
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #cc2366;
-            box-shadow: 0 0 0 3px rgba(220, 39, 67, 0.2);
-        }
+input[type="text"]::placeholder {
+    color: var(--secondary-text);
+}
 
-        button {
-            padding: 12px 30px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            /* Instagram Gradient */
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+input[type="text"]:focus {
+    outline: none;
+    border-color: #cc2366;
+    box-shadow: 0 0 0 3px rgba(220, 39, 67, 0.2);
+}
 
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+}
 
-        #status {
-            margin-top: 25px;
-            background-color: #252525;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: 'Courier New', Courier, monospace;
-            color: #ccc;
-            min-height: 60px; /* Prevents layout shift */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: left;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-        }
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
-        #status pre {
-            margin: 0;
-            width: 100%;
-        }
-    </style>
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+#status {
+    margin-top: 20px;
+    background-color: #252525;
+    padding: 12px;
+    border-radius: 8px;
+    font-family: monospace;
+    color: #ccc;
+    min-height: 60px;
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+    button {
+        font-size: 14px;
+    }
+}
+</style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>InstaS3</h1>
-        <input type="text" id="instaUrl" placeholder="Paste Instagram Post URL..." />
-        <br />
-        <button onclick="triggerEcs()">🚀 Upload</button>
-        <div id="status"></div>
-    </div>
+<div class="container">
+    <h1>InstaS3</h1>
+    <input type="text" id="instaUrl" placeholder="Paste Instagram Post URL..." />
+    <button id="uploadBtn" onclick="triggerEcs()">🚀 Upload</button>
+    <div id="status"></div>
+</div>
 
-    <script>
-        // NOTE: The API URL is set to localhost. You may need to change this.
-        const API_URL = "https://instatodrive.onrender.com/trigger";
+<script>
+const API_URL = "https://instatodrive.onrender.com/trigger";
 
-        async function triggerEcs() {
-            const url = document.getElementById("instaUrl").value.trim();
-            const statusDiv = document.getElementById("status");
-            if (!url) {
-                statusDiv.textContent = "⚠️ Please enter a valid URL.";
-                return;
-            }
+const inputField = document.getElementById("instaUrl");
+const uploadBtn = document.getElementById("uploadBtn");
+const statusDiv = document.getElementById("status");
 
-            statusDiv.textContent = "⏳ Triggering upload task...";
+// Clear text when tapping inside
+inputField.addEventListener("focus", () => {
+    inputField.value = "";
+    statusDiv.textContent = "";
+});
 
-            try {
-                const res = await fetch(`${API_URL}?url=${encodeURIComponent(url)}`);
-                const data = await res.json();
+async function triggerEcs() {
+    const url = inputField.value.trim();
+    if (!url) {
+        statusDiv.textContent = "⚠️ Please enter a valid URL.";
+        return;
+    }
 
-                if (res.ok) {
-                    statusDiv.innerHTML = `✅ Success! Task started:\n<pre>${JSON.stringify(data, null, 2)}</pre>`;
-                } else {
-                    statusDiv.innerHTML = `❌ Error starting task:\n<pre>${JSON.stringify(data, null, 2)}</pre>`;
-                }
-            } catch (err) {
-                console.error(err);
-                statusDiv.innerHTML = `❌ Network request failed: ${err.message}\n\nIs the server running at ${API_URL}?`;
-            }
+    // Disable button
+    uploadBtn.disabled = true;
+    statusDiv.textContent = "⏳ Triggering upload task...";
+
+    try {
+        const res = await fetch(`${API_URL}?url=${encodeURIComponent(url)}`);
+        const data = await res.json();
+
+        if (res.ok) {
+            statusDiv.innerHTML = `✅ Success! Task started:\n${JSON.stringify(data, null, 2)}`;
+            inputField.value = "";
+        } else {
+            statusDiv.innerHTML = `❌ Error:\n${JSON.stringify(data, null, 2)}`;
         }
-    </script>
-    
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('Service Worker registered! Scope: ', registration.scope);
-                    })
-                    .catch(err => {
-                        console.error('Service Worker registration failed: ', err);
-                    });
-            });
-        }
-    </script>
+    } catch (err) {
+        statusDiv.textContent = `❌ Network error: ${err.message}`;
+    } finally {
+        // Re-enable button
+        uploadBtn.disabled = false;
+    }
+}
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js")
+            .then(reg => console.log("Service Worker registered:", reg.scope))
+            .catch(err => console.error("SW registration failed:", err));
+    });
+}
+</script>
 </body>
 </html>
