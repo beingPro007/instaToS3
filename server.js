@@ -29,6 +29,7 @@ app.get("/trigger", async (req, res) => {
         containerOverrides: [
           {
             name: process.env.CONTAINER_NAME,
+            OPEN_AI_API_KEY: process.env.OPEN_AI_API_KEY,
             environment: [
               { name: "INSTAGRAM_URL", value: url },
             ],

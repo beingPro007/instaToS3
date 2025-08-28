@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-ecs": "^3.859.0",
+    "@aws-sdk/client-ecs": "^3.864.0",
+    "@aws-sdk/client-lambda": "^3.873.0",
     "@aws-sdk/client-s3": "^3.859.0",
     "axios": "^1.11.0",
     "cors": "^2.8.5",
@@ -22,6 +23,8 @@
     "googleapis": "^154.1.0",
     "mime-types": "^3.0.1",
     "nodemon": "^3.1.10",
-    "open": "^10.2.0"
+    "open": "^10.2.0",
+    "openai": "^5.13.1",
+    "sharp": "^0.34.3"
   }
 }

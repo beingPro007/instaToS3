@@ -132,7 +132,8 @@ const inputField = document.getElementById("instaUrl");
 const uploadBtn = document.getElementById("uploadBtn");
 const statusDiv = document.getElementById("status");
 
-// Clear text when tapping inside
+const instaRegex = /^(https?:\/\/)?(www\.)?instagram\.com\/(p|reel|tv)\/[A-Za-z0-9_-]+(\/)?(\?.*)?$/;
+
 inputField.addEventListener("focus", () => {
     inputField.value = "";
     statusDiv.textContent = "";
@@ -140,8 +141,15 @@ inputField.addEventListener("focus", () => {
 
 async function triggerEcs() {
     const url = inputField.value.trim();
+
     if (!url) {
         statusDiv.textContent = "⚠️ Please enter a valid URL.";
+        return;
+    }
+
+    // Validate with regex
+    if (!instaRegex.test(url)) {
+        statusDiv.textContent = "⚠️ Please enter a valid Instagram post/reel/tv URL.";
         return;
     }
 
