@@ -5,3 +5,4 @@ dist
 docker-compose.yml
 dockerfile
 Dockerfile
+insta-to-s3-code

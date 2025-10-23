@@ -13,7 +13,7 @@ image = modal.Image.debian_slim().pip_install(
 
 # ECS client
 @app.function(image=image, secrets=[insta_ecs_secrets])
-@modal.fastapi_endpoint(method="POST")
+@modal.fastapi_endpoint(method="GET")
 async def trigger(url: str = Query(..., description="URL to process")):
     """
     Modal FastAPI endpoint to trigger an ECS Fargate task

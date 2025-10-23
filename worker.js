@@ -8,11 +8,13 @@ import { ECSClient, RunTaskCommand } from "@aws-sdk/client-ecs";
 import mime from "mime-types";
 import sharp from "sharp";
 import OpenAI from "openai";
-import {retryWithBackoff, delay} from "./utils/retry.js";
+import { retryWithBackoff, delay } from "./utils/retry.js";
+import { promisify } from "util";
 configDotenv();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const execAsync = promisify(exec);
 
 const s3 = new S3Client({ region: process.env.AWS_DEFAULT_REGION });
 const ecs = new ECSClient({ region: process.env.AWS_DEFAULT_REGION });
@@ -90,7 +92,7 @@ async function uploadToS3({ bucketName, key, filePath }) {
 async function safeCleanup(dirPath) {
   try {
     await rm(dirPath, { recursive: true, force: true });
-  } catch {}
+  } catch { }
 }
 
 async function processInstagramPost(instagramUrl) {
@@ -146,6 +148,15 @@ async function processInstagramPost(instagramUrl) {
         }
 
         await safeCleanup(tempDir);
+        const filesStr = uploads.map(k => `"${k}"`).join(",");
+        const cmd = `jq '.wallpapers += [${filesStr}]' wallpapers.json > tmp.json && mv tmp.json wallpapers.json`;
+        await execAsync(cmd);
+        await uploadToS3({
+          bucketName: process.env.AWS_BUCKET_NAME,
+          key: "wallpapers.json",
+          filePath: "wallpapers.json",
+        });
+        console.log("Uploaded wallpapers.json to S3");
         resolve(uploads);
       } catch (err) {
         await safeCleanup(tempDir);
