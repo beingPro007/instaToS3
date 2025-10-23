@@ -4,7 +4,7 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Install Python and pip
-RUN apk update && apk add --no-cache python3 py3-pip
+RUN apk update && apk add --no-cache python3 py3-pip jq
 
 RUN python3 -m venv /opt/venv \
   && . /opt/venv/bin/activate \
